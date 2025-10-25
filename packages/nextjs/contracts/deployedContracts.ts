@@ -7,12 +7,25 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   10143: {
     JobEscrow: {
-      address: "0xf8a4d23020d919f9c28d6eda89e750daacb9a3b9",
+      address: "0xDe70C5326EF0a932fB2Fa56Ecaa2Fb08BC0D7693",
       abi: [
         {
           type: "constructor",
           inputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "nonpayable"
+        },
+        {
+          type: "function",
+          name: "VALIDATOR_FEE_PERCENT",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256"
+            }
+          ],
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -21,11 +34,11 @@ const deployedContracts = {
             {
               name: "_jobId",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "nonpayable"
         },
         {
           type: "function",
@@ -34,22 +47,22 @@ const deployedContracts = {
             {
               name: "",
               type: "address",
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -58,11 +71,11 @@ const deployedContracts = {
             {
               name: "_jobId",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "nonpayable"
         },
         {
           type: "function",
@@ -71,11 +84,11 @@ const deployedContracts = {
             {
               name: "_jobId",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "nonpayable"
         },
         {
           type: "function",
@@ -84,16 +97,29 @@ const deployedContracts = {
             {
               name: "_title",
               type: "string",
-              internalType: "string",
+              internalType: "string"
             },
             {
               name: "_description",
               type: "string",
-              internalType: "string",
-            },
+              internalType: "string"
+            }
           ],
           outputs: [],
-          stateMutability: "payable",
+          stateMutability: "payable"
+        },
+        {
+          type: "function",
+          name: "disputeJob",
+          inputs: [
+            {
+              name: "_jobId",
+              type: "uint256",
+              internalType: "uint256"
+            }
+          ],
+          outputs: [],
+          stateMutability: "nonpayable"
         },
         {
           type: "function",
@@ -102,8 +128,8 @@ const deployedContracts = {
             {
               name: "_jobId",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [
             {
@@ -114,62 +140,72 @@ const deployedContracts = {
                 {
                   name: "id",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "maker",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
                 },
                 {
                   name: "acceptor",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "validator",
+                  type: "address",
+                  internalType: "address"
                 },
                 {
                   name: "amount",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "title",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "description",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "status",
                   type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
+                  internalType: "enum JobEscrow.JobStatus"
                 },
                 {
                   name: "createdAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "completedAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
-              ],
-            },
+                {
+                  name: "disputedAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                }
+              ]
+            }
           ],
-          stateMutability: "view",
-        },
-        {
+          stateMutability: "view"
+        }, 
+       {
           type: "function",
           name: "getJobsByAcceptor",
           inputs: [
             {
               name: "_acceptor",
               type: "address",
-              internalType: "address",
-            },
+              internalType: "address"
+            }
           ],
           outputs: [
             {
@@ -180,52 +216,62 @@ const deployedContracts = {
                 {
                   name: "id",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "maker",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
                 },
                 {
                   name: "acceptor",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "validator",
+                  type: "address",
+                  internalType: "address"
                 },
                 {
                   name: "amount",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "title",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "description",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "status",
                   type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
+                  internalType: "enum JobEscrow.JobStatus"
                 },
                 {
                   name: "createdAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "completedAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
-              ],
-            },
+                {
+                  name: "disputedAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                }
+              ]
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -234,8 +280,8 @@ const deployedContracts = {
             {
               name: "_maker",
               type: "address",
-              internalType: "address",
-            },
+              internalType: "address"
+            }
           ],
           outputs: [
             {
@@ -246,52 +292,138 @@ const deployedContracts = {
                 {
                   name: "id",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "maker",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
                 },
                 {
                   name: "acceptor",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "validator",
+                  type: "address",
+                  internalType: "address"
                 },
                 {
                   name: "amount",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "title",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "description",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "status",
                   type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
+                  internalType: "enum JobEscrow.JobStatus"
                 },
                 {
                   name: "createdAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "completedAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
-              ],
-            },
+                {
+                  name: "disputedAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                }
+              ]
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "getJobsByValidator",
+          inputs: [
+            {
+              name: "_validator",
+              type: "address",
+              internalType: "address"
+            }
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "tuple[]",
+              internalType: "struct JobEscrow.Job[]",
+              components: [
+                {
+                  name: "id",
+                  type: "uint256",
+                  internalType: "uint256"
+                },
+                {
+                  name: "maker",
+                  type: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "acceptor",
+                  type: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "validator",
+                  type: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "amount",
+                  type: "uint256",
+                  internalType: "uint256"
+                },
+                {
+                  name: "title",
+                  type: "string",
+                  internalType: "string"
+                },
+                {
+                  name: "description",
+                  type: "string",
+                  internalType: "string"
+                },
+                {
+                  name: "status",
+                  type: "uint8",
+                  internalType: "enum JobEscrow.JobStatus"
+                },
+                {
+                  name: "createdAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                },
+                {
+                  name: "completedAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                },
+                {
+                  name: "disputedAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                }
+              ]
+            }
+          ],
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -306,52 +438,62 @@ const deployedContracts = {
                 {
                   name: "id",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "maker",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
                 },
                 {
                   name: "acceptor",
                   type: "address",
-                  internalType: "address",
+                  internalType: "address"
+                },
+                {
+                  name: "validator",
+                  type: "address",
+                  internalType: "address"
                 },
                 {
                   name: "amount",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "title",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "description",
                   type: "string",
-                  internalType: "string",
+                  internalType: "string"
                 },
                 {
                   name: "status",
                   type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
+                  internalType: "enum JobEscrow.JobStatus"
                 },
                 {
                   name: "createdAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
                 {
                   name: "completedAt",
                   type: "uint256",
-                  internalType: "uint256",
+                  internalType: "uint256"
                 },
-              ],
-            },
+                {
+                  name: "disputedAt",
+                  type: "uint256",
+                  internalType: "uint256"
+                }
+              ]
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -361,10 +503,74 @@ const deployedContracts = {
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "getTotalValidators",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256"
+            }
+          ],
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "getValidators",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address[]",
+              internalType: "address[]"
+            }
+          ],
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "isValidator",
+          inputs: [
+            {
+              name: "_address",
+              type: "address",
+              internalType: "address"
+            }
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool"
+            }
+          ],
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "jobValidator",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256"
+            }
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address"
+            }
+          ],
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -373,81 +579,91 @@ const deployedContracts = {
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [
             {
               name: "id",
               type: "uint256",
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "maker",
               type: "address",
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "acceptor",
               type: "address",
-              internalType: "address",
+              internalType: "address"
+            },
+            {
+              name: "validator",
+              type: "address",
+              internalType: "address"
             },
             {
               name: "amount",
               type: "uint256",
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "title",
               type: "string",
-              internalType: "string",
+              internalType: "string"
             },
             {
               name: "description",
               type: "string",
-              internalType: "string",
+              internalType: "string"
             },
             {
               name: "status",
               type: "uint8",
-              internalType: "enum JobEscrow.JobStatus",
+              internalType: "enum JobEscrow.JobStatus"
             },
             {
               name: "createdAt",
               type: "uint256",
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "completedAt",
               type: "uint256",
-              internalType: "uint256",
+              internalType: "uint256"
             },
+            {
+              name: "disputedAt",
+              type: "uint256",
+              internalType: "uint256"
+            }
           ],
-          stateMutability: "view",
-        },
-        {
+          stateMutability: "view"
+        }, 
+       {
           type: "function",
           name: "makerJobs",
           inputs: [
             {
               name: "",
               type: "address",
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
           outputs: [
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -457,10 +673,10 @@ const deployedContracts = {
             {
               name: "",
               type: "uint256",
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
         },
         {
           type: "function",
@@ -470,17 +686,42 @@ const deployedContracts = {
             {
               name: "",
               type: "address",
-              internalType: "address",
-            },
+              internalType: "address"
+            }
           ],
-          stateMutability: "view",
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "registerAsValidator",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable"
         },
         {
           type: "function",
           name: "renounceOwnership",
           inputs: [],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "nonpayable"
+        },
+        {
+          type: "function",
+          name: "resolveDispute",
+          inputs: [
+            {
+              name: "_jobId",
+              type: "uint256",
+              internalType: "uint256"
+            },
+            {
+              name: "_approve",
+              type: "bool",
+              internalType: "bool"
+            }
+          ],
+          outputs: [],
+          stateMutability: "nonpayable"
         },
         {
           type: "function",
@@ -489,11 +730,80 @@ const deployedContracts = {
             {
               name: "newOwner",
               type: "address",
-              internalType: "address",
-            },
+              internalType: "address"
+            }
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "nonpayable"
+        },
+        {
+          type: "function",
+          name: "validatorList",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256"
+            }
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address"
+            }
+          ],
+          stateMutability: "view"
+        },
+        {
+          type: "function",
+          name: "validators",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address"
+            }
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool"
+            }
+          ],
+          stateMutability: "view"
+        },
+        {
+          type: "event",
+          name: "DisputeResolved",
+          inputs: [
+            {
+              name: "jobId",
+              type: "uint256",
+              indexed: true,
+              internalType: "uint256"
+            },
+            {
+              name: "validator",
+              type: "address",
+              indexed: true,
+              internalType: "address"
+            },
+            {
+              name: "approved",
+              type: "bool",
+              indexed: false,
+              internalType: "bool"
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256"
+            }
+          ],
+          anonymous: false
         },
         {
           type: "event",
@@ -503,16 +813,16 @@ const deployedContracts = {
               name: "jobId",
               type: "uint256",
               indexed: true,
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "acceptor",
               type: "address",
               indexed: true,
-              internalType: "address",
-            },
+              internalType: "address"
+            }
           ],
-          anonymous: false,
+          anonymous: false
         },
         {
           type: "event",
@@ -522,22 +832,22 @@ const deployedContracts = {
               name: "jobId",
               type: "uint256",
               indexed: true,
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "maker",
               type: "address",
               indexed: true,
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "refundAmount",
               type: "uint256",
               indexed: false,
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
-          anonymous: false,
+          anonymous: false
         },
         {
           type: "event",
@@ -547,22 +857,22 @@ const deployedContracts = {
               name: "jobId",
               type: "uint256",
               indexed: true,
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "acceptor",
               type: "address",
               indexed: true,
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "amount",
               type: "uint256",
               indexed: false,
-              internalType: "uint256",
-            },
+              internalType: "uint256"
+            }
           ],
-          anonymous: false,
+          anonymous: false
         },
         {
           type: "event",
@@ -572,28 +882,47 @@ const deployedContracts = {
               name: "jobId",
               type: "uint256",
               indexed: true,
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "maker",
               type: "address",
               indexed: true,
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "amount",
               type: "uint256",
               indexed: false,
-              internalType: "uint256",
+              internalType: "uint256"
             },
             {
               name: "title",
               type: "string",
               indexed: false,
-              internalType: "string",
-            },
+              internalType: "string"
+            }
           ],
-          anonymous: false,
+          anonymous: false
+        },
+        {
+          type: "event",
+          name: "JobDisputed",
+          inputs: [
+            {
+              name: "jobId",
+              type: "uint256",
+              indexed: true,
+              internalType: "uint256"
+            },
+            {
+              name: "validator",
+              type: "address",
+              indexed: true,
+              internalType: "address"
+            }
+          ],
+          anonymous: false
         },
         {
           type: "event",
@@ -603,16 +932,29 @@ const deployedContracts = {
               name: "previousOwner",
               type: "address",
               indexed: true,
-              internalType: "address",
+              internalType: "address"
             },
             {
               name: "newOwner",
               type: "address",
               indexed: true,
-              internalType: "address",
-            },
+              internalType: "address"
+            }
           ],
-          anonymous: false,
+          anonymous: false
+        },
+        {
+          type: "event",
+          name: "ValidatorRegistered",
+          inputs: [
+            {
+              name: "validator",
+              type: "address",
+              indexed: true,
+              internalType: "address"
+            }
+          ],
+          anonymous: false
         },
         {
           type: "error",
@@ -621,9 +963,9 @@ const deployedContracts = {
             {
               name: "owner",
               type: "address",
-              internalType: "address",
-            },
-          ],
+              internalType: "address"
+            }
+          ]
         },
         {
           type: "error",
@@ -632,805 +974,20 @@ const deployedContracts = {
             {
               name: "account",
               type: "address",
-              internalType: "address",
-            },
-          ],
+              internalType: "address"
+            }
+          ]
         },
         {
           type: "error",
           name: "ReentrancyGuardReentrantCall",
-          inputs: [],
-        },
+          inputs: []
+        }
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 45305820,
+      deployedOnBlock: 45324202,
     },
   },
-  31337: {
-    YourContract: {
-      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
-      abi: [
-        {
-          type: "constructor",
-          inputs: [
-            {
-              name: "_owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "receive",
-          stateMutability: "payable",
-        },
-        {
-          type: "function",
-          name: "greeting",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "owner",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "premium",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "setGreeting",
-          inputs: [
-            {
-              name: "_newGreeting",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          outputs: [],
-          stateMutability: "payable",
-        },
-        {
-          type: "function",
-          name: "totalCounter",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "userGreetingCounter",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "withdraw",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "event",
-          name: "GreetingChange",
-          inputs: [
-            {
-              name: "greetingSetter",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "newGreeting",
-              type: "string",
-              indexed: false,
-              internalType: "string",
-            },
-            {
-              name: "premium",
-              type: "bool",
-              indexed: false,
-              internalType: "bool",
-            },
-            {
-              name: "value",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-      ],
-      inheritedFunctions: {},
-      deployedOnBlock: 1,
-    },
-    JobEscrow: {
-      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
-      abi: [
-        {
-          type: "constructor",
-          inputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "acceptJob",
-          inputs: [
-            {
-              name: "_jobId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "acceptorJobs",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "cancelJob",
-          inputs: [
-            {
-              name: "_jobId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "completeJob",
-          inputs: [
-            {
-              name: "_jobId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "createJob",
-          inputs: [
-            {
-              name: "_title",
-              type: "string",
-              internalType: "string",
-            },
-            {
-              name: "_description",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          outputs: [],
-          stateMutability: "payable",
-        },
-        {
-          type: "function",
-          name: "getJob",
-          inputs: [
-            {
-              name: "_jobId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "tuple",
-              internalType: "struct JobEscrow.Job",
-              components: [
-                {
-                  name: "id",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "maker",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "acceptor",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "amount",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "title",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "description",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "status",
-                  type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
-                },
-                {
-                  name: "createdAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "completedAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-              ],
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getJobsByAcceptor",
-          inputs: [
-            {
-              name: "_acceptor",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "tuple[]",
-              internalType: "struct JobEscrow.Job[]",
-              components: [
-                {
-                  name: "id",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "maker",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "acceptor",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "amount",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "title",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "description",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "status",
-                  type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
-                },
-                {
-                  name: "createdAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "completedAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-              ],
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getJobsByMaker",
-          inputs: [
-            {
-              name: "_maker",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "tuple[]",
-              internalType: "struct JobEscrow.Job[]",
-              components: [
-                {
-                  name: "id",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "maker",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "acceptor",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "amount",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "title",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "description",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "status",
-                  type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
-                },
-                {
-                  name: "createdAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "completedAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-              ],
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getOpenJobs",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "tuple[]",
-              internalType: "struct JobEscrow.Job[]",
-              components: [
-                {
-                  name: "id",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "maker",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "acceptor",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "amount",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "title",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "description",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "status",
-                  type: "uint8",
-                  internalType: "enum JobEscrow.JobStatus",
-                },
-                {
-                  name: "createdAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "completedAt",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-              ],
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getTotalJobs",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "jobs",
-          inputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "id",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "maker",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "acceptor",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "title",
-              type: "string",
-              internalType: "string",
-            },
-            {
-              name: "description",
-              type: "string",
-              internalType: "string",
-            },
-            {
-              name: "status",
-              type: "uint8",
-              internalType: "enum JobEscrow.JobStatus",
-            },
-            {
-              name: "createdAt",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "completedAt",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "makerJobs",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "nextJobId",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "owner",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "renounceOwnership",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "transferOwnership",
-          inputs: [
-            {
-              name: "newOwner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "event",
-          name: "JobAccepted",
-          inputs: [
-            {
-              name: "jobId",
-              type: "uint256",
-              indexed: true,
-              internalType: "uint256",
-            },
-            {
-              name: "acceptor",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "JobCancelled",
-          inputs: [
-            {
-              name: "jobId",
-              type: "uint256",
-              indexed: true,
-              internalType: "uint256",
-            },
-            {
-              name: "maker",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "refundAmount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "JobCompleted",
-          inputs: [
-            {
-              name: "jobId",
-              type: "uint256",
-              indexed: true,
-              internalType: "uint256",
-            },
-            {
-              name: "acceptor",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "JobCreated",
-          inputs: [
-            {
-              name: "jobId",
-              type: "uint256",
-              indexed: true,
-              internalType: "uint256",
-            },
-            {
-              name: "maker",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-            {
-              name: "title",
-              type: "string",
-              indexed: false,
-              internalType: "string",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "OwnershipTransferred",
-          inputs: [
-            {
-              name: "previousOwner",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "newOwner",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "error",
-          name: "OwnableInvalidOwner",
-          inputs: [
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-        {
-          type: "error",
-          name: "OwnableUnauthorizedAccount",
-          inputs: [
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-        {
-          type: "error",
-          name: "ReentrancyGuardReentrantCall",
-          inputs: [],
-        },
-      ],
-      inheritedFunctions: {},
-      deployedOnBlock: 2,
-    },
-  },
-} as const;
+} satisfies GenericContractsDeclaration;
 
-export default deployedContracts satisfies GenericContractsDeclaration;
+export default deployedContracts;

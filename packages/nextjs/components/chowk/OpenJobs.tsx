@@ -37,6 +37,7 @@ export const OpenJobs = () => {
   const { data: openJobs, refetch: refetchOpenJobs } = useScaffoldReadContract({
     contractName: "JobEscrow",
     functionName: "getOpenJobs",
+    args: [],
   }) as { data: Job[] | undefined, refetch: () => void };
 
   const handleAcceptJob = async (jobId: bigint) => {
@@ -113,7 +114,7 @@ export const OpenJobs = () => {
                   <div className="flex items-center ml-4">
                     <CurrencyDollarIcon className="w-5 h-5 text-success mr-1" />
                     <span className="text-xl font-bold text-success">
-                      {formatEther(job.amount)} ETH
+                      {formatEther(job.amount)} MON
                     </span>
                   </div>
                 </div>

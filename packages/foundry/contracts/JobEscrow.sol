@@ -15,12 +15,14 @@ contract JobEscrow is ReentrancyGuard, Ownable {
         uint256 id;
         address maker;
         address acceptor;
+        address validator;
         uint256 amount;
         string title;
         string description;
         JobStatus status;
         uint256 createdAt;
         uint256 completedAt;
+        uint256 disputedAt;
     }
     
     enum JobStatus {
@@ -37,11 +39,20 @@ contract JobEscrow is ReentrancyGuard, Ownable {
     mapping(address => uint256[]) public makerJobs;
     mapping(address => uint256[]) public acceptorJobs;
     
+    // Validator system
+    mapping(address => bool) public validators;
+    address[] public validatorList;
+    mapping(uint256 => address) public jobValidator;
+    uint256 public constant VALIDATOR_FEE_PERCENT = 1; // 1% fee for validators
+    
     // Events
     event JobCreated(uint256 indexed jobId, address indexed maker, uint256 amount, string title);
     event JobAccepted(uint256 indexed jobId, address indexed acceptor);
     event JobCompleted(uint256 indexed jobId, address indexed acceptor, uint256 amount);
     event JobCancelled(uint256 indexed jobId, address indexed maker, uint256 refundAmount);
+    event ValidatorRegistered(address indexed validator);
+    event JobDisputed(uint256 indexed jobId, address indexed validator);
+    event DisputeResolved(uint256 indexed jobId, address indexed validator, bool approved, uint256 amount);
     
     constructor() Ownable(msg.sender) {}
     
@@ -61,12 +72,14 @@ contract JobEscrow is ReentrancyGuard, Ownable {
             id: jobId,
             maker: msg.sender,
             acceptor: address(0),
+            validator: address(0),
             amount: msg.value,
             title: _title,
             description: _description,
             status: JobStatus.Open,
             createdAt: block.timestamp,
-            completedAt: 0
+            completedAt: 0,
+            disputedAt: 0
         });
         
         makerJobs[msg.sender].push(jobId);
@@ -202,5 +215,133 @@ contract JobEscrow is ReentrancyGuard, Ownable {
      */
     function getTotalJobs() external view returns (uint256) {
         return nextJobId - 1;
+    }
+    
+    /**
+     * @dev Register as a validator
+     */
+    function registerAsValidator() external {
+        require(!validators[msg.sender], "Already registered as validator");
+        
+        validators[msg.sender] = true;
+        validatorList.push(msg.sender);
+        
+        emit ValidatorRegistered(msg.sender);
+    }
+    
+    /**
+     * @dev Dispute a job (only maker can call)
+     */
+    function disputeJob(uint256 _jobId) external nonReentrant {
+        Job storage job = jobs[_jobId];
+        require(job.id != 0, "Job does not exist");
+        require(job.maker == msg.sender, "Only job maker can dispute");
+        require(job.status == JobStatus.Accepted, "Job must be accepted to dispute");
+        require(job.acceptor != address(0), "No acceptor assigned");
+        require(validatorList.length > 0, "No validators available");
+        
+        job.status = JobStatus.Disputed;
+        job.disputedAt = block.timestamp;
+        
+        // Assign random validator
+        uint256 randomIndex = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, _jobId))) % validatorList.length;
+        address assignedValidator = validatorList[randomIndex];
+        job.validator = assignedValidator;
+        jobValidator[_jobId] = assignedValidator;
+        
+        emit JobDisputed(_jobId, assignedValidator);
+    }
+    
+    /**
+     * @dev Resolve dispute (only assigned validator can call)
+     */
+    function resolveDispute(uint256 _jobId, bool _approve) external nonReentrant {
+        Job storage job = jobs[_jobId];
+        require(job.id != 0, "Job does not exist");
+        require(job.status == JobStatus.Disputed, "Job is not in dispute");
+        require(job.validator == msg.sender, "Only assigned validator can resolve");
+        
+        uint256 jobAmount = job.amount;
+        uint256 validatorFee = (jobAmount * VALIDATOR_FEE_PERCENT) / 100;
+        uint256 remainingAmount = jobAmount - validatorFee;
+        
+        if (_approve) {
+            // Approve: pay acceptor (minus validator fee)
+            job.status = JobStatus.Completed;
+            job.completedAt = block.timestamp;
+            
+            // Pay acceptor
+            (bool success1, ) = job.acceptor.call{value: remainingAmount}("");
+            require(success1, "Payment to acceptor failed");
+            
+            // Pay validator fee
+            (bool success2, ) = msg.sender.call{value: validatorFee}("");
+            require(success2, "Validator fee payment failed");
+            
+            emit JobCompleted(_jobId, job.acceptor, remainingAmount);
+        } else {
+            // Reject: refund maker (minus validator fee)
+            job.status = JobStatus.Cancelled;
+            
+            // Refund maker
+            (bool success1, ) = job.maker.call{value: remainingAmount}("");
+            require(success1, "Refund to maker failed");
+            
+            // Pay validator fee
+            (bool success2, ) = msg.sender.call{value: validatorFee}("");
+            require(success2, "Validator fee payment failed");
+            
+            emit JobCancelled(_jobId, job.maker, remainingAmount);
+        }
+        
+        emit DisputeResolved(_jobId, msg.sender, _approve, jobAmount);
+    }
+    
+    /**
+     * @dev Get all validators
+     */
+    function getValidators() external view returns (address[] memory) {
+        return validatorList;
+    }
+    
+    /**
+     * @dev Get jobs assigned to validator
+     */
+    function getJobsByValidator(address _validator) external view returns (Job[] memory) {
+        uint256 count = 0;
+        
+        // Count disputed jobs assigned to this validator
+        for (uint256 i = 1; i < nextJobId; i++) {
+            if (jobs[i].validator == _validator && jobs[i].status == JobStatus.Disputed) {
+                count++;
+            }
+        }
+        
+        // Create array of validator jobs
+        Job[] memory validatorJobs = new Job[](count);
+        uint256 index = 0;
+        
+        for (uint256 i = 1; i < nextJobId; i++) {
+            if (jobs[i].validator == _validator && jobs[i].status == JobStatus.Disputed) {
+                validatorJobs[index] = jobs[i];
+                index++;
+            }
+        }
+        
+        return validatorJobs;
+    }
+    
+    /**
+     * @dev Check if address is a validator
+     */
+    function isValidator(address _address) external view returns (bool) {
+        return validators[_address];
+    }
+    
+    /**
+     * @dev Get total number of validators
+     */
+    function getTotalValidators() external view returns (uint256) {
+        return validatorList.length;
     }
 }

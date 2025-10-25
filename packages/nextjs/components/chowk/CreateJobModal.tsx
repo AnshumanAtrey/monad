@@ -23,6 +23,7 @@ export const CreateJobModal = () => {
   const { data: totalJobs } = useScaffoldReadContract({
     contractName: "JobEscrow",
     functionName: "getTotalJobs",
+    args: [],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -142,7 +143,7 @@ export const CreateJobModal = () => {
           {/* Amount */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Payment Amount (ETH) *</span>
+              <span className="label-text font-medium">Payment Amount (MON) *</span>
             </label>
             <div className="relative">
               <input
@@ -156,7 +157,7 @@ export const CreateJobModal = () => {
                 className="input input-bordered w-full pr-16"
               />
               <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-base-content/50 font-medium">
-                ETH
+                MON
               </span>
             </div>
             <label className="label">
@@ -181,7 +182,7 @@ export const CreateJobModal = () => {
               ) : (
                 <>
                   <PlusIcon className="w-5 h-5 mr-2" />
-                  Create Gig & Escrow {formData.amount || "0"} ETH
+                  Create Gig & Escrow {formData.amount || "0"} MON
                 </>
               )}
             </button>
@@ -194,7 +195,7 @@ export const CreateJobModal = () => {
         {totalJobs !== undefined && (
           <div className="mt-8 pt-6 border-t border-base-300">
             <div className="text-center text-sm text-base-content/60">
-              Total gigs created: <span className="font-semibold">{totalJobs.toString()}</span>
+              Total gigs created: <span className="font-semibold">{totalJobs ? Number(totalJobs).toString() : "0"}</span>
             </div>
           </div>
         )}

@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "./DeployHelpers.s.sol";
-import { JobEscrow } from "../contracts/JobEscrow.sol";
+import "../../script/DeployHelpers.s.sol";
+import { JobEscrow } from "../../contracts/JobEscrow.sol";
 
 /**
  * @notice Script to populate test data for demo

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "forge-std/Script.sol";
-import { JobEscrow } from "../contracts/JobEscrow.sol";
+import { JobEscrow } from "../../contracts/JobEscrow.sol";
 
 contract CreateMoreGigs is Script {
     JobEscrow constant jobEscrow = JobEscrow(0xF8a4D23020d919f9C28d6eDa89e750Daacb9A3B9);

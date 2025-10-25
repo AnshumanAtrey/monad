@@ -39,6 +39,7 @@ export const OngoingJobs = () => {
   const { address: connectedAddress } = useAccount();
   const [completingJobId, setCompletingJobId] = useState<bigint | null>(null);
   const [cancellingJobId, setCancellingJobId] = useState<bigint | null>(null);
+  const [disputingJobId, setDisputingJobId] = useState<bigint | null>(null);
 
   const { data: deployedContractData } = useDeployedContractInfo("JobEscrow");
   const { writeContractAsync } = useWriteContract();
@@ -110,6 +111,33 @@ export const OngoingJobs = () => {
     }
   };
 
+  const handleDisputeJob = async (jobId: bigint) => {
+    try {
+      setDisputingJobId(jobId);
+      
+      if (!deployedContractData?.address || !deployedContractData?.abi) {
+        throw new Error("Contract not deployed");
+      }
+
+      await writeContractAsync({
+        address: deployedContractData.address,
+        abi: deployedContractData.abi,
+        functionName: "disputeJob",
+        args: [jobId],
+      });
+
+      notification.success("Job disputed! A validator will review it.");
+      refetchMakerJobs();
+      refetchAcceptorJobs();
+
+    } catch (error: any) {
+      console.error("Error disputing job:", error);
+      notification.error(error?.message || "Failed to dispute job");
+    } finally {
+      setDisputingJobId(null);
+    }
+  };
+
   const getStatusBadge = (status: number) => {
     switch (status) {
       case JobStatus.Open:
@@ -118,6 +146,8 @@ export const OngoingJobs = () => {
         return <div className="badge badge-info">In Progress</div>;
       case JobStatus.Completed:
         return <div className="badge badge-success">Completed</div>;
+      case JobStatus.Disputed:
+        return <div className="badge badge-warning">Under Review</div>;
       case JobStatus.Cancelled:
         return <div className="badge badge-error">Cancelled</div>;
       default:
@@ -157,7 +187,7 @@ export const OngoingJobs = () => {
             <div className="flex items-center ml-4">
               <CurrencyDollarIcon className="w-5 h-5 text-success mr-1" />
               <span className="text-xl font-bold text-success">
-                {formatEther(job.amount)} ETH
+                {formatEther(job.amount)} MON
               </span>
             </div>
           </div>
@@ -190,23 +220,42 @@ export const OngoingJobs = () => {
         {/* Action Buttons */}
         <div className="flex-shrink-0 flex gap-2">
           {isMaker && job.status === JobStatus.Accepted && (
-            <button
-              onClick={() => handleCompleteJob(job.id)}
-              disabled={completingJobId === job.id}
-              className="btn btn-success"
-            >
-              {completingJobId === job.id ? (
-                <>
-                  <span className="loading loading-spinner loading-sm"></span>
-                  Completing...
-                </>
-              ) : (
-                <>
-                  <CheckCircleIcon className="w-5 h-5 mr-2" />
-                  Mark Complete
-                </>
-              )}
-            </button>
+            <>
+              <button
+                onClick={() => handleCompleteJob(job.id)}
+                disabled={completingJobId === job.id}
+                className="btn btn-success"
+              >
+                {completingJobId === job.id ? (
+                  <>
+                    <span className="loading loading-spinner loading-sm"></span>
+                    Completing...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircleIcon className="w-5 h-5 mr-2" />
+                    Mark Complete
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => handleDisputeJob(job.id)}
+                disabled={disputingJobId === job.id}
+                className="btn btn-warning btn-outline"
+              >
+                {disputingJobId === job.id ? (
+                  <>
+                    <span className="loading loading-spinner loading-sm"></span>
+                    Disputing...
+                  </>
+                ) : (
+                  <>
+                    <XCircleIcon className="w-5 h-5 mr-2" />
+                    Dispute Work
+                  </>
+                )}
+              </button>
+            </>
           )}
           
           {isMaker && job.status === JobStatus.Open && (
