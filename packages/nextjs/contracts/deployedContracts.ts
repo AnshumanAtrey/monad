@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   10143: {
     JobEscrow: {
-      address: "0xF8a4D23020d919f9C28d6eDa89e750Daacb9A3B9",
+      address: "0xf8a4d23020d919f9c28d6eda89e750daacb9a3b9",
       abi: [
         {
           type: "constructor",
@@ -643,12 +643,12 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 1,
+      deployedOnBlock: 45305820,
     },
   },
   31337: {
     YourContract: {
-      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
+      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
       abi: [
         {
           type: "constructor",
@@ -789,10 +789,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2,
+      deployedOnBlock: 1,
     },
     JobEscrow: {
-      address: "0xb19b36b1456e65e3a6d514d3f715f204bd59f431",
+      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
       abi: [
         {
           type: "constructor",
@@ -1428,7 +1428,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 3,
+      deployedOnBlock: 2,
     },
   },
 } as const;

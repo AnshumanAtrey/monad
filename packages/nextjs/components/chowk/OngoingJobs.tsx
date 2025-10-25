@@ -231,47 +231,14 @@ export const OngoingJobs = () => {
         </div>
       </div>
 
-      {/* Status-specific messages */}
-      {job.status === JobStatus.Accepted && (
-        <div className="mt-4 bg-info/10 border border-info/20 rounded-lg p-3">
-          <div className="flex items-center text-sm">
-            <ClockIcon className="w-4 h-4 text-info mr-2" />
-            {isMaker ? (
-              <span className="text-info">
-                Work in progress. Mark complete when satisfied to release payment instantly.
-              </span>
-            ) : (
-              <span className="text-info">
-                You&apos;re working on this gig. Payment will be released when the maker marks it complete.
-              </span>
-            )}
-          </div>
-        </div>
-      )}
 
-      {job.status === JobStatus.Completed && (
-        <div className="mt-4 bg-success/10 border border-success/20 rounded-lg p-3">
-          <div className="flex items-center text-sm">
-            <CheckCircleIcon className="w-4 h-4 text-success mr-2" />
-            <span className="text-success">
-              ✅ Job completed! Payment transferred instantly via Monad&apos;s sub-second finality.
-            </span>
-          </div>
-        </div>
-      )}
     </div>
   );
 
   if (!connectedAddress) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-center">
-          <ClockIcon className="w-16 h-16 text-base-content/30 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Connect Your Wallet</h3>
-          <p className="text-base-content/60">
-            Connect your wallet to see your ongoing gigs
-          </p>
-        </div>
+        <p>Connect your wallet to see your gigs</p>
       </div>
     );
   }
@@ -284,13 +251,7 @@ export const OngoingJobs = () => {
   if (allJobs.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-center">
-          <ClockIcon className="w-16 h-16 text-base-content/30 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No Gigs Yet</h3>
-          <p className="text-base-content/60 mb-4">
-            Create a gig or accept one from the Open Gigs tab to get started
-          </p>
-        </div>
+        <p>No gigs yet</p>
       </div>
     );
   }

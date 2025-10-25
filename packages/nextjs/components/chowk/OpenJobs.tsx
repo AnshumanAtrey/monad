@@ -83,16 +83,7 @@ export const OpenJobs = () => {
   if (!openJobs || openJobs.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-center">
-          <BriefcaseIcon className="w-16 h-16 text-base-content/30 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No Open Gigs</h3>
-          <p className="text-base-content/60 mb-4">
-            Be the first to create a gig and start the marketplace!
-          </p>
-          <div className="text-sm text-base-content/50">
-            Gigs will appear here once they&apos;re created by makers
-          </div>
-        </div>
+        <p>No open gigs available</p>
       </div>
     );
   }
@@ -177,30 +168,12 @@ export const OpenJobs = () => {
               </div>
             </div>
 
-            {/* Instant Payout Highlight */}
-            <div className="mt-4 bg-gradient-to-r from-success/10 to-primary/10 border border-success/20 rounded-lg p-3">
-              <div className="flex items-center text-sm">
-                <div className="text-success mr-2">⚡</div>
-                <span className="font-medium text-success">Instant Payout:</span>
-                <span className="text-base-content/70 ml-1">
-                  Get paid immediately when marked complete (thanks to Monad&apos;s sub-second finality)
-                </span>
-              </div>
-            </div>
+
           </div>
         ))}
       </div>
 
-      {/* Help Text */}
-      {!connectedAddress && (
-        <div className="text-center py-8">
-          <div className="bg-warning/10 border border-warning/20 rounded-lg p-4 inline-block">
-            <div className="text-warning font-medium">
-              Connect your wallet to accept gigs and start earning
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

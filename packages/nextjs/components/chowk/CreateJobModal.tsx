@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAccount, useWriteContract } from "wagmi";
 import { parseEther } from "viem";
-import { PlusIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { useDeployedContractInfo, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -84,13 +84,7 @@ export const CreateJobModal = () => {
   if (!connectedAddress) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-center">
-          <CurrencyDollarIcon className="w-16 h-16 text-base-content/30 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Connect Your Wallet</h3>
-          <p className="text-base-content/60">
-            Connect your wallet to create gigs and start earning on CHOWK
-          </p>
-        </div>
+        <p>Connect your wallet to create gigs</p>
       </div>
     );
   }
@@ -192,21 +186,7 @@ export const CreateJobModal = () => {
               )}
             </button>
 
-            {/* Info Box */}
-            <div className="bg-info/10 border border-info/20 rounded-lg p-4">
-              <div className="flex items-start">
-                <div className="text-info mr-3 mt-0.5">ℹ️</div>
-                <div className="text-sm">
-                  <p className="font-medium text-info mb-1">How it works:</p>
-                  <ul className="text-base-content/70 space-y-1">
-                    <li>• Your ETH is held safely in escrow</li>
-                    <li>• Freelancers can accept your gig</li>
-                    <li>• Mark complete when satisfied</li>
-                    <li>• Payment transfers instantly to freelancer</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
 
