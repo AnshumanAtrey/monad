@@ -31,6 +31,13 @@ contract DeployToMonad is Script {
         console.logString("1. Verify contract on Monad Explorer");
         console.logString("2. Connect frontend to Monad Testnet");
         console.logString("3. Create demo gigs with MON tokens");
+        console.logString("");
+        console.logString("Registering deployer as initial validator...");
+        
+        // Register deployer as first validator
+        jobEscrow.registerAsValidator();
+        console.logString("✅ Deployer registered as validator");
+        console.logString("Others can register at: /validator");
         
         vm.stopBroadcast();
     }
