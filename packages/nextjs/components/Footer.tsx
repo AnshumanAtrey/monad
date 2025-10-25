@@ -45,19 +45,13 @@ export const Footer = () => {
       </div>
       <div className="w-full">
         <ul className="menu menu-horizontal w-full">
-          <div className="flex justify-center items-center gap-2 text-sm w-full">
-            <div className="text-center">
-              <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
-                Fork me
-              </a>
-            </div>
-            <span>·</span>
+          <div className="flex justify-center items-center gap-2 text-sm w-full flex-wrap">
             <div className="flex justify-center items-center gap-2">
-              <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
+              <p className="m-0 text-center text-[#636e72]">
+                Built with <HeartIcon className="inline-block h-4 w-4 text-[#ff7675]" /> at
               </p>
               <a
-                className="flex justify-center items-center gap-1"
+                className="flex justify-center items-center gap-1 text-[#6c5ce7] hover:text-[#a29bfe] transition-colors duration-200"
                 href="https://buidlguidl.com/"
                 target="_blank"
                 rel="noreferrer"
@@ -66,10 +60,37 @@ export const Footer = () => {
                 <span className="link">BuidlGuidl</span>
               </a>
             </div>
-            <span>·</span>
+            <span className="text-[#b2bec3]">·</span>
             <div className="text-center">
-              <a href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" target="_blank" rel="noreferrer" className="link">
-                Support
+              <a 
+                href="https://monad.xyz" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-[#6c5ce7] hover:text-[#a29bfe] transition-colors duration-200 font-medium"
+              >
+                MONAD
+              </a>
+            </div>
+            <span className="text-[#b2bec3]">·</span>
+            <div className="text-center">
+              <a 
+                href="https://nextjs.org" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-[#6c5ce7] hover:text-[#a29bfe] transition-colors duration-200"
+              >
+                Next.js
+              </a>
+            </div>
+            <span className="text-[#b2bec3]">·</span>
+            <div className="text-center">
+              <a 
+                href="https://tailwindcss.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-[#6c5ce7] hover:text-[#a29bfe] transition-colors duration-200"
+              >
+                Tailwind CSS
               </a>
             </div>
           </div>

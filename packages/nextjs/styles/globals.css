@@ -1,12 +1,30 @@
 @import "tailwindcss";
-
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
   --shadow-center: 0 0 12px -2px rgb(0 0 0 / 0.05);
   --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  /* Custom CHOWK Colors */
+  --color-primary-bg: #f5eee8;
+  --color-card-bg: #ffffff;
+  --color-accent: #6c5ce7;
+  --color-accent-light: #a29bfe;
+  --color-accent-lighter: #e0dfff;
+  --color-text: #2d3436;
+  --color-text-light: #636e72;
+  --color-text-lighter: #b2bec3;
+  --color-border: #dfe6e9;
+  --color-success: #00b894;
+  --color-warning: #fdcb6e;
+  --color-danger: #ff7675;
+  --color-info: #0984e3;
+  
+  /* Font Families */
+  --font-inter: 'Inter', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
 }
 
 @plugin "daisyui" {
@@ -81,23 +99,72 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-border, currentColor);
+  }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-primary-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    font-weight: 600;
   }
 
   p {
     margin: 1rem 0;
   }
 
-  body {
-    min-height: 100vh;
+  /* Font utility classes */
+  .font-inter {
+    font-family: var(--font-inter);
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    margin-bottom: 0.5rem;
-    line-height: 1;
+  .font-poppins {
+    font-family: var(--font-poppins);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  /* Custom animations */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
   }
 }
 

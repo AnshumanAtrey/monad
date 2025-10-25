@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import type { NextPage } from "next";
-import { useAccount, useWriteContract } from "wagmi";
+import React, { useState } from "react";
 import { formatEther } from "viem";
+import { useAccount } from "wagmi";
 import { 
   ShieldCheckIcon, 
-  CheckCircleIcon, 
-  XCircleIcon,
   CurrencyDollarIcon,
-  ClockIcon
+  XCircleIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  UserIcon
 } from "@heroicons/react/24/outline";
-import { Address } from "~~/components/scaffold-eth";
-import { useDeployedContractInfo, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import DashboardLayout from "~~/components/layout/DashboardLayout";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
+// Job interface matching the contract
 interface Job {
   id: bigint;
   maker: string;
@@ -23,26 +24,25 @@ interface Job {
   amount: bigint;
   title: string;
   description: string;
-  status: number;
+  status: number; // 0=Open, 1=Accepted, 2=Completed, 3=Cancelled, 4=Disputed
   createdAt: bigint;
   completedAt: bigint;
   disputedAt: bigint;
 }
 
-const ValidatorPage: NextPage = () => {
+const ValidatorPage = () => {
   const { address: connectedAddress } = useAccount();
+  const { writeContractAsync: writeRegisterValidator } = useScaffoldWriteContract("JobEscrow");
+  const { writeContractAsync: writeResolveDispute } = useScaffoldWriteContract("JobEscrow");
   const [isRegistering, setIsRegistering] = useState(false);
-  const [resolvingJobId, setResolvingJobId] = useState<bigint | null>(null);
+  const [isResolving, setIsResolving] = useState<{ [key: string]: boolean }>({});
 
-  const { data: deployedContractData } = useDeployedContractInfo("JobEscrow");
-  const { writeContractAsync } = useWriteContract();
-
-  // Check if user is already a validator
-  const { data: isValidator } = useScaffoldReadContract({
+  // Check if user is a validator
+  const { data: isValidator, refetch: refetchIsValidator } = useScaffoldReadContract({
     contractName: "JobEscrow",
     functionName: "isValidator",
     args: [connectedAddress],
-  });
+  }) as { data: boolean | undefined, refetch: () => void };
 
   // Get total validators count
   const { data: totalValidators } = useScaffoldReadContract({
@@ -66,211 +66,175 @@ const ValidatorPage: NextPage = () => {
 
     try {
       setIsRegistering(true);
-      
-      if (!deployedContractData?.address || !deployedContractData?.abi) {
-        throw new Error("Contract not deployed");
-      }
-
-      await writeContractAsync({
-        address: deployedContractData.address,
-        abi: deployedContractData.abi,
+      await writeRegisterValidator({
         functionName: "registerAsValidator",
         args: [],
       });
-
+      
       notification.success("Successfully registered as validator!");
-
-    } catch (error: any) {
+      refetchIsValidator();
+    } catch (error) {
       console.error("Error registering validator:", error);
-      notification.error(error?.message || "Failed to register as validator");
+      notification.error("Failed to register as validator");
     } finally {
       setIsRegistering(false);
     }
   };
 
   const handleResolveDispute = async (jobId: bigint, approve: boolean) => {
-    try {
-      setResolvingJobId(jobId);
-      
-      if (!deployedContractData?.address || !deployedContractData?.abi) {
-        throw new Error("Contract not deployed");
-      }
+    if (!connectedAddress) {
+      notification.error("Please connect your wallet");
+      return;
+    }
 
-      await writeContractAsync({
-        address: deployedContractData.address,
-        abi: deployedContractData.abi,
+    const jobIdStr = jobId.toString();
+    try {
+      setIsResolving(prev => ({ ...prev, [jobIdStr]: true }));
+      
+      await writeResolveDispute({
         functionName: "resolveDispute",
         args: [jobId, approve],
       });
-
-      notification.success(`Dispute ${approve ? 'approved' : 'rejected'} successfully!`);
+      
+      notification.success(`Dispute ${approve ? "approved" : "rejected"} successfully!`);
       refetchValidatorJobs();
-
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error resolving dispute:", error);
-      notification.error(error?.message || "Failed to resolve dispute");
+      notification.error("Failed to resolve dispute");
     } finally {
-      setResolvingJobId(null);
+      setIsResolving(prev => ({ ...prev, [jobIdStr]: false }));
     }
-  };
-
-  const formatTimeAgo = (timestamp: bigint) => {
-    const now = Math.floor(Date.now() / 1000);
-    const diff = now - Number(timestamp);
-    
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
   };
 
   if (!connectedAddress) {
     return (
-      <div className="flex items-center flex-col grow pt-6">
-        <div className="px-5 text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Validator Dashboard</h1>
-          <p className="text-lg mb-4">Connect your wallet to become a validator</p>
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center bg-white rounded-xl p-8 shadow-lg max-w-md">
+            <ShieldCheckIcon className="w-16 h-16 mx-auto mb-4 text-[#6c5ce7]" />
+            <h2 className="text-2xl font-bold text-[#2d3436] mb-4 font-inter">Validator Dashboard</h2>
+            <p className="text-[#636e72] mb-6">Please connect your wallet to access validator features</p>
+          </div>
         </div>
-      </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="flex items-center flex-col grow pt-6">
-      {/* Header */}
-      <div className="px-5 text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">Validator Dashboard</h1>
-        <p className="text-lg mb-4">Resolve disputes and earn MON</p>
-      </div>
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-[#2d3436] mb-4 flex items-center justify-center font-inter">
+            <ShieldCheckIcon className="w-10 h-10 mr-3 text-[#6c5ce7]" />
+            Validator Dashboard
+          </h1>
+          <p className="text-lg text-[#636e72] max-w-2xl mx-auto">
+            Help maintain marketplace quality by resolving disputes and earn 1% fees
+          </p>
+        </div>
 
-      {/* Validator Stats */}
-      <div className="w-full max-w-4xl px-4 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-base-200 rounded-lg p-4 text-center">
-            <ShieldCheckIcon className="w-8 h-8 mx-auto mb-2 text-primary" />
-            <div className="text-2xl font-bold">{totalValidators ? Number(totalValidators).toString() : "0"}</div>
-            <div className="text-sm text-base-content/60">Total Validators</div>
+        {/* Validator Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white rounded-xl p-6 text-center shadow-lg transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl">
+            <ShieldCheckIcon className="w-12 h-12 mx-auto mb-4 text-[#6c5ce7]" />
+            <div className="text-3xl font-bold text-[#2d3436] mb-2">{totalValidators ? Number(totalValidators).toString() : "0"}</div>
+            <div className="text-sm text-[#636e72] uppercase tracking-wide font-medium">Total Validators</div>
           </div>
-          <div className="bg-base-200 rounded-lg p-4 text-center">
-            <CurrencyDollarIcon className="w-8 h-8 mx-auto mb-2 text-success" />
-            <div className="text-2xl font-bold">1%</div>
-            <div className="text-sm text-base-content/60">Fee per Resolution</div>
+          <div className="bg-white rounded-xl p-6 text-center shadow-lg transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl">
+            <CurrencyDollarIcon className="w-12 h-12 mx-auto mb-4 text-[#00b894]" />
+            <div className="text-3xl font-bold text-[#2d3436] mb-2">1%</div>
+            <div className="text-sm text-[#636e72] uppercase tracking-wide font-medium">Fee per Resolution</div>
           </div>
-          <div className="bg-base-200 rounded-lg p-4 text-center">
-            <ClockIcon className="w-8 h-8 mx-auto mb-2 text-warning" />
-            <div className="text-2xl font-bold">{validatorJobs?.length || "0"}</div>
-            <div className="text-sm text-base-content/60">Pending Disputes</div>
+          <div className="bg-white rounded-xl p-6 text-center shadow-lg transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl">
+            <CheckCircleIcon className="w-12 h-12 mx-auto mb-4 text-[#0984e3]" />
+            <div className="text-3xl font-bold text-[#2d3436] mb-2">{validatorJobs?.length || 0}</div>
+            <div className="text-sm text-[#636e72] uppercase tracking-wide font-medium">Pending Disputes</div>
           </div>
         </div>
-      </div>
 
-      {/* Registration Section */}
-      {!isValidator && (
-        <div className="w-full max-w-2xl px-4 mb-8">
-          <div className="bg-base-100 rounded-2xl shadow-xl p-8 text-center">
-            <ShieldCheckIcon className="w-16 h-16 mx-auto mb-4 text-primary" />
-            <h2 className="text-2xl font-bold mb-4">Become a Validator</h2>
-            <p className="text-base-content/70 mb-6">
-              Help resolve disputes between gig makers and acceptors. Earn 1% fee for each resolution.
+        {/* Validator Registration */}
+        {!isValidator && (
+          <div className="bg-white rounded-xl p-8 shadow-lg text-center">
+            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-[#6c5ce7] to-[#a29bfe] rounded-full flex items-center justify-center">
+              <ShieldCheckIcon className="w-10 h-10 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#2d3436] mb-4 font-inter">Become a Validator</h2>
+            <p className="text-[#636e72] mb-8 max-w-md mx-auto leading-relaxed">
+              Join our validator network to help resolve disputes and earn fees for maintaining marketplace quality.
             </p>
             <button
               onClick={handleRegisterValidator}
               disabled={isRegistering}
-              className="btn btn-primary btn-lg"
+              className="px-8 py-3 bg-gradient-to-r from-[#6c5ce7] to-[#a29bfe] text-white rounded-lg font-semibold transition-all duration-200 hover:transform hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isRegistering ? (
-                <>
-                  <span className="loading loading-spinner loading-sm"></span>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                   Registering...
-                </>
+                </div>
               ) : (
-                <>
-                  <ShieldCheckIcon className="w-5 h-5 mr-2" />
-                  Register as Validator
-                </>
+                "Register as Validator"
               )}
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Disputes to Resolve */}
-      {isValidator && (
-        <div className="w-full max-w-6xl px-4">
-          <h2 className="text-2xl font-bold mb-6 flex items-center">
-            <ShieldCheckIcon className="w-6 h-6 mr-3 text-primary" />
-            Disputes to Resolve ({validatorJobs?.length || 0})
-          </h2>
-
-          {!validatorJobs || validatorJobs.length === 0 ? (
-            <div className="text-center py-12">
-              <p>No disputes assigned to you yet</p>
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              {validatorJobs.map((job) => (
-                <div key={job.id.toString()} className="bg-base-100 rounded-xl shadow-lg border border-base-300 p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                    {/* Job Info */}
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h3 className="text-lg font-semibold text-base-content mb-1">
-                            {job.title}
-                          </h3>
-                          <div className="badge badge-warning">Under Review</div>
-                        </div>
-                        <div className="flex items-center ml-4">
-                          <CurrencyDollarIcon className="w-5 h-5 text-success mr-1" />
-                          <span className="text-xl font-bold text-success">
+        {/* Validator Jobs */}
+        {isValidator && (
+          <div className="bg-white rounded-xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-[#2d3436] mb-6 flex items-center font-inter">
+              <ClockIcon className="w-6 h-6 mr-3 text-[#fdcb6e]" />
+              Disputes to Resolve
+            </h2>
+            
+            {!validatorJobs || validatorJobs.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="w-20 h-20 mx-auto mb-6 bg-[#f8f9fa] rounded-full flex items-center justify-center">
+                  <ShieldCheckIcon className="w-10 h-10 text-[#b2bec3]" />
+                </div>
+                <p className="text-[#636e72] text-lg mb-2">No disputes assigned to you yet</p>
+                <p className="text-sm text-[#b2bec3]">
+                  You&apos;ll be randomly assigned disputes when they occur
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {validatorJobs.map((job) => (
+                  <div key={job.id.toString()} className="border border-[#dfe6e9] rounded-xl p-6 bg-[#f8f9fa] transition-all duration-200 hover:shadow-md">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-[#2d3436] mb-3 font-inter">
+                          {job.title}
+                        </h3>
+                        <p className="text-[#636e72] mb-4 leading-relaxed">
+                          {job.description}
+                        </p>
+                        <div className="flex items-center space-x-6 text-sm text-[#636e72]">
+                          <span className="flex items-center bg-white px-3 py-1 rounded-full">
+                            <CurrencyDollarIcon className="w-4 h-4 mr-2 text-[#00b894]" />
                             {formatEther(job.amount)} MON
+                          </span>
+                          <span className="flex items-center bg-white px-3 py-1 rounded-full">
+                            <UserIcon className="w-4 h-4 mr-2 text-[#6c5ce7]" />
+                            Maker: {job.maker.slice(0, 6)}...{job.maker.slice(-4)}
+                          </span>
+                          <span className="flex items-center bg-white px-3 py-1 rounded-full">
+                            <UserIcon className="w-4 h-4 mr-2 text-[#0984e3]" />
+                            Worker: {job.acceptor.slice(0, 6)}...{job.acceptor.slice(-4)}
                           </span>
                         </div>
                       </div>
-
-                      {job.description && (
-                        <p className="text-base-content/70 mb-3">
-                          {job.description}
-                        </p>
-                      )}
-
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-base-content/60">
-                        <div className="flex items-center">
-                          <span>Maker:</span>
-                          <Address address={job.maker} size="sm" />
-                        </div>
-                        <div className="flex items-center">
-                          <span>Acceptor:</span>
-                          <Address address={job.acceptor} size="sm" />
-                        </div>
-                        <div className="flex items-center">
-                          <ClockIcon className="w-4 h-4 mr-1" />
-                          <span>Disputed {formatTimeAgo(job.disputedAt)}</span>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 bg-warning/10 border border-warning/20 rounded-lg p-3">
-                        <div className="text-sm">
-                          <p className="font-medium text-warning mb-1">Your Fee:</p>
-                          <p className="text-base-content/70">
-                            You will earn {formatEther((job.amount * BigInt(1)) / BigInt(100))} MON (1%) for resolving this dispute
-                          </p>
-                        </div>
-                      </div>
                     </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex-shrink-0 flex gap-2">
+                    
+                    <div className="flex space-x-4">
                       <button
                         onClick={() => handleResolveDispute(job.id, true)}
-                        disabled={resolvingJobId === job.id}
-                        className="btn btn-success"
+                        disabled={isResolving[job.id.toString()]}
+                        className="flex-1 px-6 py-3 bg-[#00b894] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#00a085] hover:transform hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                       >
-                        {resolvingJobId === job.id ? (
-                          <>
-                            <span className="loading loading-spinner loading-sm"></span>
-                            Resolving...
-                          </>
+                        {isResolving[job.id.toString()] ? (
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         ) : (
                           <>
                             <CheckCircleIcon className="w-5 h-5 mr-2" />
@@ -280,14 +244,11 @@ const ValidatorPage: NextPage = () => {
                       </button>
                       <button
                         onClick={() => handleResolveDispute(job.id, false)}
-                        disabled={resolvingJobId === job.id}
-                        className="btn btn-error btn-outline"
+                        disabled={isResolving[job.id.toString()]}
+                        className="flex-1 px-6 py-3 bg-[#ff7675] text-white rounded-lg font-semibold transition-all duration-200 hover:bg-[#e84393] hover:transform hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                       >
-                        {resolvingJobId === job.id ? (
-                          <>
-                            <span className="loading loading-spinner loading-sm"></span>
-                            Resolving...
-                          </>
+                        {isResolving[job.id.toString()] ? (
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         ) : (
                           <>
                             <XCircleIcon className="w-5 h-5 mr-2" />
@@ -297,13 +258,13 @@ const ValidatorPage: NextPage = () => {
                       </button>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </DashboardLayout>
   );
 };
 
