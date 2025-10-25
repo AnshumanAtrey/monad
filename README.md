@@ -20,7 +20,7 @@
 ## Tech stack (what we'll use)
 
 * **Smart contracts:** Solidity → **Foundry** (fast tests). `JobEscrow.sol` (OpenZeppelin).
-* **Frontend:** **Next.js** (Scaffold-ETH starter) + **Tailwind** + **wagmi / viem** for wallet interactions.
+* **Frontend:** **Next.js** (Scaffold-ETH starter) + **Tailwind** + **wagmi / viem** for wallet interactions
 * **Backend / API:** **NestJS** (host on Render) — matchmaking, file metadata, optional dispute engine.
 * **Auth & storage:** **Firebase** (Firestore + Storage) — profiles, job metadata, attachments.
 * **Indexing / metrics:** **QuickNode Streams** or **Envio HyperIndex** + `eth_getBlockReceipts` to compute TPS/latency.
