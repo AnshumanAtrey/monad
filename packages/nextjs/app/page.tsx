@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           )}
 
           <div className="text-center text-sm text-base-content/60 mb-6">
-            Powered by Monad's sub-second finality • Makers stake MON upfront • Acceptors get paid instantly
+            Powered by Monad&apos;s sub-second finality • Makers stake MON upfront • Acceptors get paid instantly
           </div>
         </div>
 
@@ -103,7 +103,7 @@ const Home: NextPage = () => {
                 <CurrencyDollarIcon className="h-12 w-12 text-primary mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Instant Payouts</h3>
                 <p className="text-base-content/70">
-                  Money is escrowed upfront. When work is complete, payment transfers instantly thanks to Monad's sub-second finality.
+                  Money is escrowed upfront. When work is complete, payment transfers instantly thanks to Monad&apos;s sub-second finality.
                 </p>
               </div>
               <div className="flex flex-col bg-base-100 px-6 py-8 text-center items-center rounded-2xl shadow-lg">
@@ -117,7 +117,7 @@ const Home: NextPage = () => {
                 <ChartBarIcon className="h-12 w-12 text-accent mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Parallel Processing</h3>
                 <p className="text-base-content/70">
-                  Handle hundreds of concurrent gigs without congestion, powered by Monad's parallel execution.
+                  Handle hundreds of concurrent gigs without congestion, powered by Monad&apos;s parallel execution.
                 </p>
               </div>
             </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { parseEther, formatEther } from "viem";
+import { useAccount, useWriteContract } from "wagmi";
+import { parseEther } from "viem";
 import { PlusIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useDeployedContractInfo, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
@@ -56,7 +56,7 @@ export const CreateJobModal = () => {
         throw new Error("Contract not deployed");
       }
 
-      const txHash = await writeContractAsync({
+      await writeContractAsync({
         address: deployedContractData.address,
         abi: deployedContractData.abi,
         functionName: "createJob",

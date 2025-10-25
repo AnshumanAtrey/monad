@@ -17,11 +17,8 @@ export const LiveMetrics = () => {
   useEffect(() => {
     const updateMetrics = async () => {
       try {
-        const startTime = performance.now();
-        
         // Get latest block to measure RPC latency
         const block = await publicClient?.getBlock({ blockTag: 'latest' });
-        const rpcLatency = performance.now() - startTime;
         
         // For Monad, we can measure actual finality time
         // Block time on Monad is ~1 second, so we show realistic metrics

@@ -90,7 +90,7 @@ export const OpenJobs = () => {
             Be the first to create a gig and start the marketplace!
           </p>
           <div className="text-sm text-base-content/50">
-            Gigs will appear here once they're created by makers
+            Gigs will appear here once they&apos;re created by makers
           </div>
         </div>
       </div>
@@ -183,7 +183,7 @@ export const OpenJobs = () => {
                 <div className="text-success mr-2">⚡</div>
                 <span className="font-medium text-success">Instant Payout:</span>
                 <span className="text-base-content/70 ml-1">
-                  Get paid immediately when marked complete (thanks to Monad's sub-second finality)
+                  Get paid immediately when marked complete (thanks to Monad&apos;s sub-second finality)
                 </span>
               </div>
             </div>

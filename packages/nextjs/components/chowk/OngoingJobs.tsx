@@ -242,7 +242,7 @@ export const OngoingJobs = () => {
               </span>
             ) : (
               <span className="text-info">
-                You're working on this gig. Payment will be released when the maker marks it complete.
+                You&apos;re working on this gig. Payment will be released when the maker marks it complete.
               </span>
             )}
           </div>
@@ -254,7 +254,7 @@ export const OngoingJobs = () => {
           <div className="flex items-center text-sm">
             <CheckCircleIcon className="w-4 h-4 text-success mr-2" />
             <span className="text-success">
-              ✅ Job completed! Payment transferred instantly via Monad's sub-second finality.
+              ✅ Job completed! Payment transferred instantly via Monad&apos;s sub-second finality.
             </span>
           </div>
         </div>
