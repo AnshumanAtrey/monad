@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   10143: {
     JobEscrow: {
-      address: "0x5b73C5498c1E3b4dbA84de0F1833c4a029d90519",
+      address: "0xF8a4D23020d919f9C28d6eDa89e750Daacb9A3B9",
       abi: [
         {
           type: "constructor",
