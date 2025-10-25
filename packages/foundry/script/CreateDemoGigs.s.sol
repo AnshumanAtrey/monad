@@ -9,8 +9,8 @@ import { JobEscrow } from "../contracts/JobEscrow.sol";
  */
 contract CreateDemoGigs is Script {
     function run() external {
-        // Replace with the actual deployed JobEscrow address on Monad
-        address jobEscrowAddress = vm.envAddress("JOB_ESCROW_ADDRESS");
+        // Use the actual deployed JobEscrow address on Monad
+        address jobEscrowAddress = 0x5b73C5498c1E3b4dbA84de0F1833c4a029d90519;
         JobEscrow jobEscrow = JobEscrow(jobEscrowAddress);
         
         vm.startBroadcast();

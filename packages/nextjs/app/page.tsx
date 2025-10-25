@@ -18,6 +18,7 @@ import { OngoingJobs } from "~~/components/chowk/OngoingJobs";
 import { LiveMetrics } from "~~/components/chowk/LiveMetrics";
 import { NetworkSwitcher } from "~~/components/chowk/NetworkSwitcher";
 import { MonadBanner } from "~~/components/chowk/MonadBanner";
+import { WalletStatus } from "~~/components/chowk/WalletStatus";
 
 
 const Home: NextPage = () => {
@@ -53,6 +54,9 @@ const Home: NextPage = () => {
             Powered by Monad&apos;s sub-second finality • Makers stake MON upfront • Acceptors get paid instantly
           </div>
         </div>
+
+        {/* Wallet Status */}
+        <WalletStatus />
 
         {/* Live Metrics */}
         <LiveMetrics />
